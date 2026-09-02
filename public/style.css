@@ -590,7 +590,7 @@ body::before {
   position: -webkit-sticky;
   position: sticky;
   bottom: 10px;
-  z-index: 5;
+  z-index: 999;
   background: var(--panel-bg-strong);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
