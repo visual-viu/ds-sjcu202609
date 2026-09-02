@@ -323,7 +323,7 @@ body::before {
 .mode-panel { animation: fadeIn 0.2s ease; }
 
 /* Draw pad (freehand character sketch, replaces file upload) */
-.draw-pad { display: flex; flex-direction: column; gap: 10px; }
+.draw-pad { display: flex; flex-direction: column; gap: 10px; max-width: 480px; margin: 0 auto; }
 
 #drawCanvas {
   width: 100%;
