@@ -213,6 +213,8 @@ drawCanvas.addEventListener('pointerdown', (e) => {
   drawCtx.moveTo(p.x, p.y);
   drawCtx.lineTo(p.x + 0.01, p.y + 0.01); // draw a dot on a single tap/click
   drawCtx.stroke();
+  drawCtx.beginPath();
+  drawCtx.moveTo(p.x, p.y);
   updateBrushCursor(e);
 });
 
@@ -222,6 +224,11 @@ drawCanvas.addEventListener('pointermove', (e) => {
   const p = getCanvasPoint(e);
   drawCtx.lineTo(p.x, p.y);
   drawCtx.stroke();
+  // Start a fresh subpath at the current point instead of appending to the
+  // one growing subpath — otherwise stroke() redraws the whole path so far
+  // on every move, so lag grows the longer/faster you draw.
+  drawCtx.beginPath();
+  drawCtx.moveTo(p.x, p.y);
 });
 
 drawCanvas.addEventListener('pointerenter', (e) => {
