@@ -627,7 +627,7 @@ function getDailyDrawingLabel() {
     console.warn('[TypoAI] Could not persist daily drawing counter', err);
   }
 
-  return `${now.getMonth() + 1}월 ${now.getDate()}일 내 작품❤ ${String(count).padStart(2, '0')}`;
+  return `${now.getMonth() + 1}월 ${now.getDate()}일 작품❤ ${String(count).padStart(2, '0')}`;
 }
 
 async function addHistoryEntry(options, resultImage) {
