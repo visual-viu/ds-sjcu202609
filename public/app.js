@@ -60,6 +60,7 @@ const fontStyleRow = $('#fontStyleRow');
 const extraPromptEl = $('#extraPrompt');
 
 const generateBtn = $('#generateBtn');
+const headerGenerateBtn = $('#headerGenerateBtn');
 const artworkStage = $('#artworkStage');
 const artworkEmpty = $('#artworkEmpty');
 const artworkText = $('#artworkText');
@@ -477,6 +478,7 @@ function resetPreviewToEmpty() {
   artworkImage.hidden = true;
   resultActions.hidden = true;
   hasResult = false;
+  headerGenerateBtn.hidden = false;
 }
 
 /* ==========================================================================
@@ -528,6 +530,7 @@ async function runGeneration() {
   isGenerating = true;
   generateBtn.disabled = true;
   generateBtn.classList.add('is-loading');
+  headerGenerateBtn.disabled = true;
   artworkEmpty.hidden = true;
   resultActions.hidden = true;
   loadingOverlay.hidden = false;
@@ -553,11 +556,14 @@ async function runGeneration() {
     loadingOverlay.hidden = true;
     generateBtn.disabled = false;
     generateBtn.classList.remove('is-loading');
+    headerGenerateBtn.disabled = false;
+    headerGenerateBtn.hidden = hasResult;
     isGenerating = false;
   }
 }
 
 generateBtn.addEventListener('click', runGeneration);
+headerGenerateBtn.addEventListener('click', runGeneration);
 generateAgainBtn.addEventListener('click', runGeneration);
 
 newArtworkBtn.addEventListener('click', () => {
@@ -815,9 +821,10 @@ function restoreFromHistory(entry) {
   applyPreviewFromState();
   hasResult = false;
   resultActions.hidden = true;
+  headerGenerateBtn.hidden = false;
 
   $('#studio').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  showToast('히스토리 설정을 불러왔어요. Generate Artwork를 눌러 다시 만들어보세요.');
+  showToast('히스토리 설정을 불러왔어요. 제작하기!를 눌러 다시 만들어보세요.');
 }
 
 function syncOptionGroup(selector, value) {
