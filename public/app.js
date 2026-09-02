@@ -47,6 +47,7 @@ const textInput = $('#textInput');
 const textCount = $('#textCount');
 
 const drawCanvas = $('#drawCanvas');
+const brushCursor = $('#brushCursor');
 const undoDrawBtn = $('#undoDrawBtn');
 const clearDrawBtn = $('#clearDrawBtn');
 
@@ -182,44 +183,74 @@ function pushUndoSnapshot() {
   if (undoStack.length > MAX_UNDO) undoStack.shift();
 }
 
+function currentLineWidth() {
+  return drawTool === 'eraser' ? brushSize * 2.5 : brushSize;
+}
+
+let lastPointerEvent = null;
+
+function updateBrushCursor(e) {
+  lastPointerEvent = e;
+  const rect = drawCanvas.getBoundingClientRect();
+  const scale = rect.width / drawCanvas.width;
+  const sizePx = currentLineWidth() * scale;
+  brushCursor.style.width = `${sizePx}px`;
+  brushCursor.style.height = `${sizePx}px`;
+  brushCursor.style.left = `${e.clientX - rect.left}px`;
+  brushCursor.style.top = `${e.clientY - rect.top}px`;
+  brushCursor.classList.toggle('is-eraser', drawTool === 'eraser');
+}
+
 drawCanvas.addEventListener('pointerdown', (e) => {
   pushUndoSnapshot();
   isDrawing = true;
   hasDrawing = true;
   drawCanvas.setPointerCapture(e.pointerId);
   drawCtx.strokeStyle = drawTool === 'eraser' ? ERASER_COLOR : PEN_COLOR;
-  drawCtx.lineWidth = drawTool === 'eraser' ? brushSize * 2.5 : brushSize;
+  drawCtx.lineWidth = currentLineWidth();
   const p = getCanvasPoint(e);
   drawCtx.beginPath();
   drawCtx.moveTo(p.x, p.y);
   drawCtx.lineTo(p.x + 0.01, p.y + 0.01); // draw a dot on a single tap/click
   drawCtx.stroke();
+  updateBrushCursor(e);
 });
 
 drawCanvas.addEventListener('pointermove', (e) => {
+  updateBrushCursor(e);
   if (!isDrawing) return;
   const p = getCanvasPoint(e);
   drawCtx.lineTo(p.x, p.y);
   drawCtx.stroke();
 });
 
+drawCanvas.addEventListener('pointerenter', (e) => {
+  brushCursor.hidden = false;
+  updateBrushCursor(e);
+});
+
+drawCanvas.addEventListener('pointerleave', () => {
+  brushCursor.hidden = true;
+  if (isDrawing) endStroke();
+});
+
 function endStroke() { isDrawing = false; }
 drawCanvas.addEventListener('pointerup', endStroke);
 drawCanvas.addEventListener('pointercancel', endStroke);
-drawCanvas.addEventListener('pointerleave', () => { if (isDrawing) endStroke(); });
 
 $$('.draw-brush-toggle .segmented-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     brushSize = Number(btn.dataset.brush);
     $$('.draw-brush-toggle .segmented-btn').forEach(b => b.classList.toggle('is-active', b === btn));
+    if (lastPointerEvent) updateBrushCursor(lastPointerEvent);
   });
 });
 
 $$('.draw-tool-toggle .segmented-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     drawTool = btn.dataset.tool;
-    drawCanvas.classList.toggle('is-erasing', drawTool === 'eraser');
     $$('.draw-tool-toggle .segmented-btn').forEach(b => b.classList.toggle('is-active', b === btn));
+    if (lastPointerEvent) updateBrushCursor(lastPointerEvent);
   });
 });
 
