@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: typoai
+    name: ds-sjcu
     runtime: node
     plan: free
     buildCommand: npm install
