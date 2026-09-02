@@ -144,17 +144,6 @@ body::before {
   color: transparent;
 }
 
-.nav-cta {
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 9px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--panel-border-strong);
-  background: var(--panel-bg-strong);
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-.nav-cta:hover { background: rgba(255, 255, 255, 0.12); }
-
 /* ==========================================================================
    Hero
    ========================================================================== */
