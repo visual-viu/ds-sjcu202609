@@ -222,7 +222,8 @@ body::before {
   display: flex;
   flex-direction: column;
   max-height: none;
-  position: static;
+  position: relative;
+  z-index: 2;
 }
 
 .panel-scroll {
@@ -591,11 +592,6 @@ body::before {
   position: sticky;
   bottom: 10px;
   z-index: 999;
-  background: var(--panel-bg-strong);
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
-  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-  box-shadow: 0 -12px 24px -12px rgba(0, 0, 0, 0.35);
 }
 .btn-generate { width: 100%; padding: 15px; font-size: 1rem; }
 .btn-generate-icon { transition: transform 0.3s ease; }
