@@ -5,17 +5,17 @@
    ========================================================================== */
 
 const state = {
-  inputMode: 'text',        // 'text' | 'image'
+  inputMode: 'image',       // 'text' | 'image'
   text: '',
   imageDataUrl: null,
   resultImage: null,        // base64 PNG returned by the API, once generated
   theme: 'webtoon',
   themeName: '웹툰 제목',
   fontStyle: 'noto',
-  styleIntensity: 'normal', // weak | normal | strong
-  effect3d: 'off',          // off | weak | strong
-  background: 'transparent',// transparent | white | black | auto
-  ratio: '1:1',
+  styleIntensity: 'strong', // weak | normal | strong
+  effect3d: 'strong',       // off | weak | strong
+  background: 'auto',       // transparent | white | black | auto
+  ratio: '1.59:1',
   colorMood: 'auto',
   extraPrompt: ''
 };
@@ -336,7 +336,7 @@ function buildPrompt(options) {
   if (extraPrompt && extraPrompt.trim()) {
     prompt += `Additional creative direction: ${extraPrompt.trim()}. `;
   }
-  prompt += `Regardless of the theme chosen, give the whole piece a bold, richly detailed, three-dimensional illustration quality — with dimensional extrusion, dynamic studio lighting, soft cast shadows, and glossy or textured highlights — so the result feels vivid, premium, and eye-catching rather than flat or plain. `;
+  prompt += `Regardless of the theme or settings chosen, always render the piece with maximalist, eye-popping visual richness and pronounced three-dimensional depth — dramatic extrusion, dynamic multi-directional studio lighting, deep cast shadows, glossy specular highlights, and richly saturated, vibrant colors — so the result feels spectacular, premium, and dazzling, never flat, minimal, or plain. `;
   prompt += `The typography must remain the clear focal point of the composition, professionally rendered at print-ready quality.`;
 
   return prompt;

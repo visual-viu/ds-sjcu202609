@@ -26,7 +26,7 @@
     <div class="hero-glow"></div>
     <div class="hero-inner">
       <p class="hero-kicker">AI Typography Studio</p>
-      <h1 class="hero-title">단어를 하나의<br>그래픽으로.</h1>
+      <h1 class="hero-title">Typography<br>Artwork.</h1>
       <p class="hero-sub">이름, 단어, 직접 그린 글자에 원하는 스타일을 입혀<br>나만의 타이포그래피 아트워크를 만들어보세요.</p>
       <a href="#studio" class="btn btn-primary btn-lg" id="startCreatingBtn">
         Start Creating
@@ -55,12 +55,12 @@
           <div class="settings-group">
             <h3 class="group-title">1. 입력 방식</h3>
             <div class="segmented input-mode-toggle" role="tablist">
-              <button type="button" class="segmented-btn is-active" data-mode="text" role="tab" aria-selected="true">텍스트 입력</button>
-              <button type="button" class="segmented-btn" data-mode="image" role="tab" aria-selected="false">직접 그리기</button>
+              <button type="button" class="segmented-btn" data-mode="text" role="tab" aria-selected="false">텍스트 입력</button>
+              <button type="button" class="segmented-btn is-active" data-mode="image" role="tab" aria-selected="true">직접 그리기</button>
             </div>
 
             <!-- Text input -->
-            <div class="mode-panel" id="modePanelText" data-mode-panel="text">
+            <div class="mode-panel" id="modePanelText" data-mode-panel="text" hidden>
               <label class="field-label" for="textInput">이름 / 단어 / 짧은 문구</label>
               <input type="text" id="textInput" class="text-field" placeholder="예: 다솔, Dasol, 2026" maxlength="20" autocomplete="off">
               <div class="field-hint">
@@ -70,7 +70,7 @@
             </div>
 
             <!-- Draw directly on canvas -->
-            <div class="mode-panel" id="modePanelImage" data-mode-panel="image" hidden>
+            <div class="mode-panel" id="modePanelImage" data-mode-panel="image">
               <label class="field-label">직접 그리기</label>
               <div class="draw-pad">
                 <canvas id="drawCanvas" width="480" height="480" tabindex="0" aria-label="마우스나 손가락으로 글자를 그려보세요"></canvas>
@@ -149,24 +149,24 @@
               <span class="option-label">스타일 강도</span>
               <div class="segmented" data-option="styleIntensity">
                 <button type="button" class="segmented-btn" data-value="weak">약함</button>
-                <button type="button" class="segmented-btn is-active" data-value="normal">보통</button>
-                <button type="button" class="segmented-btn" data-value="strong">강함</button>
+                <button type="button" class="segmented-btn" data-value="normal">보통</button>
+                <button type="button" class="segmented-btn is-active" data-value="strong">강함</button>
               </div>
             </div>
 
             <div class="option-row">
               <span class="option-label">3D 효과</span>
               <div class="segmented" data-option="effect3d">
-                <button type="button" class="segmented-btn is-active" data-value="off">OFF</button>
+                <button type="button" class="segmented-btn" data-value="off">OFF</button>
                 <button type="button" class="segmented-btn" data-value="weak">약함</button>
-                <button type="button" class="segmented-btn" data-value="strong">강함</button>
+                <button type="button" class="segmented-btn is-active" data-value="strong">강함</button>
               </div>
             </div>
 
             <div class="option-row">
               <span class="option-label">배경</span>
               <div class="swatch-row" data-option="background">
-                <button type="button" class="swatch-btn is-active" data-value="transparent" title="투명">
+                <button type="button" class="swatch-btn" data-value="transparent" title="투명">
                   <span class="swatch swatch-transparent"></span><span>투명</span>
                 </button>
                 <button type="button" class="swatch-btn" data-value="white" title="흰색">
@@ -175,7 +175,7 @@
                 <button type="button" class="swatch-btn" data-value="black" title="검정">
                   <span class="swatch swatch-black"></span><span>검정</span>
                 </button>
-                <button type="button" class="swatch-btn" data-value="auto" title="AI 자동">
+                <button type="button" class="swatch-btn is-active" data-value="auto" title="AI 자동">
                   <span class="swatch swatch-auto"></span><span>AI 자동</span>
                 </button>
               </div>
@@ -184,10 +184,10 @@
             <div class="option-row">
               <span class="option-label">비율</span>
               <div class="ratio-row" data-option="ratio">
-                <button type="button" class="ratio-btn is-active" data-value="1:1"><span class="ratio-shape" style="aspect-ratio:1/1"></span>1:1</button>
+                <button type="button" class="ratio-btn" data-value="1:1"><span class="ratio-shape" style="aspect-ratio:1/1"></span>1:1</button>
                 <button type="button" class="ratio-btn" data-value="4:5"><span class="ratio-shape" style="aspect-ratio:4/5"></span>4:5</button>
                 <button type="button" class="ratio-btn" data-value="16:9"><span class="ratio-shape" style="aspect-ratio:16/9"></span>16:9</button>
-                <button type="button" class="ratio-btn" data-value="1.59:1"><span class="ratio-shape" style="aspect-ratio:1.59/1"></span>1.59:1</button>
+                <button type="button" class="ratio-btn is-active" data-value="1.59:1"><span class="ratio-shape" style="aspect-ratio:1.59/1"></span>1.59:1</button>
               </div>
             </div>
 
