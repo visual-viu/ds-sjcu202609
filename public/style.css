@@ -201,7 +201,7 @@ body::before {
 .studio { padding: 12px 24px 90px; }
 
 .studio-inner {
-  max-width: 1360px;
+  max-width: 900px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
@@ -587,6 +587,8 @@ body::before {
 .panel-footer {
   padding: 18px 24px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  bottom: 10px;
 }
 .btn-generate { width: 100%; padding: 15px; font-size: 1rem; }
 .btn-generate-icon { transition: transform 0.3s ease; }
