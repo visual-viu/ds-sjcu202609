@@ -29,6 +29,7 @@ const THEME_NAMES = {
 };
 
 const HISTORY_KEY = 'typoai_history';
+const DAILY_DRAW_COUNTER_KEY = 'typoai_daily_draw_counter';
 const MAX_HISTORY = 24;
 const THUMB_MAX_SIZE = 160;
 
@@ -53,6 +54,7 @@ const modePanelText = $('#modePanelText');
 const modePanelImage = $('#modePanelImage');
 
 const themeGrid = $('#themeGrid');
+const fontStyleRow = $('#fontStyleRow');
 
 const extraPromptEl = $('#extraPrompt');
 
@@ -121,6 +123,7 @@ $$('.input-mode-toggle .segmented-btn').forEach(btn => {
 
     modePanelText.hidden = mode !== 'text';
     modePanelImage.hidden = mode !== 'image';
+    fontStyleRow.hidden = mode === 'image';
   });
 });
 
@@ -594,11 +597,32 @@ function saveHistory(list) {
   }
 }
 
+function getDailyDrawingLabel() {
+  const now = new Date();
+  const dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+  let counter = null;
+  try {
+    counter = JSON.parse(localStorage.getItem(DAILY_DRAW_COUNTER_KEY));
+  } catch {
+    counter = null;
+  }
+
+  const count = counter && counter.date === dateKey ? counter.count + 1 : 1;
+  try {
+    localStorage.setItem(DAILY_DRAW_COUNTER_KEY, JSON.stringify({ date: dateKey, count }));
+  } catch (err) {
+    console.warn('[TypoAI] Could not persist daily drawing counter', err);
+  }
+
+  return `${now.getMonth() + 1}월 ${now.getDate()}일 내 작품❤ ${String(count).padStart(2, '0')}`;
+}
+
 async function addHistoryEntry(options, resultImage) {
   const thumb = resultImage ? await createThumbnail(resultImage) : null;
   const entry = {
     id: `h_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-    label: options.inputType === 'text' ? options.text : '직접 그린 그림',
+    label: options.inputType === 'text' ? options.text : getDailyDrawingLabel(),
     inputType: options.inputType,
     theme: options.theme,
     themeName: options.themeName,
@@ -700,6 +724,7 @@ function restoreFromHistory(entry) {
   });
   modePanelText.hidden = state.inputMode !== 'text';
   modePanelImage.hidden = state.inputMode !== 'image';
+  fontStyleRow.hidden = state.inputMode === 'image';
 
   textInput.value = state.text;
   textCount.textContent = `${state.text.length}/20`;
