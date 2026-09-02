@@ -68,6 +68,10 @@
               <div class="draw-pad">
                 <canvas id="drawCanvas" width="480" height="480" tabindex="0" aria-label="마우스나 손가락으로 글자를 그려보세요"></canvas>
                 <div class="draw-toolbar">
+                  <div class="segmented draw-tool-toggle">
+                    <button type="button" class="segmented-btn is-active" data-tool="pen">펜</button>
+                    <button type="button" class="segmented-btn" data-tool="eraser">지우개</button>
+                  </div>
                   <div class="segmented draw-brush-toggle">
                     <button type="button" class="segmented-btn" data-brush="2">얇게</button>
                     <button type="button" class="segmented-btn is-active" data-brush="7">보통</button>
@@ -87,25 +91,25 @@
           <div class="settings-group">
             <h3 class="group-title">2. 테마 선택</h3>
             <div class="theme-grid" id="themeGrid">
-              <button type="button" class="theme-card is-active" data-theme="webtoon" title="웹툰 제목">
+              <button type="button" class="theme-card is-active" data-theme="webtoon" title="웹툰 스타일">
                 <span class="theme-thumb thumb-webtoon"><span class="thumb-letter">가</span></span>
-                <span class="theme-name">웹툰 제목</span>
+                <span class="theme-name">웹툰 스타일</span>
               </button>
-              <button type="button" class="theme-card" data-theme="forest" title="풀숲">
+              <button type="button" class="theme-card" data-theme="forest" title="풀숲 스타일">
                 <span class="theme-thumb thumb-forest"><span class="thumb-letter">가</span></span>
-                <span class="theme-name">풀숲</span>
+                <span class="theme-name">풀숲 스타일</span>
               </button>
-              <button type="button" class="theme-card" data-theme="ocean" title="바다">
+              <button type="button" class="theme-card" data-theme="ocean" title="바다 스타일">
                 <span class="theme-thumb thumb-ocean"><span class="thumb-letter">가</span></span>
-                <span class="theme-name">바다</span>
+                <span class="theme-name">바다 스타일</span>
               </button>
-              <button type="button" class="theme-card" data-theme="glass" title="유리">
+              <button type="button" class="theme-card" data-theme="glass" title="유리 스타일">
                 <span class="theme-thumb thumb-glass"><span class="thumb-letter">가</span></span>
-                <span class="theme-name">유리</span>
+                <span class="theme-name">유리 스타일</span>
               </button>
-              <button type="button" class="theme-card" data-theme="geometric" title="기하학">
+              <button type="button" class="theme-card" data-theme="geometric" title="도형 스타일">
                 <span class="theme-thumb thumb-geometric"><span class="thumb-letter">가</span></span>
-                <span class="theme-name">기하학</span>
+                <span class="theme-name">도형 스타일</span>
               </button>
             </div>
           </div>

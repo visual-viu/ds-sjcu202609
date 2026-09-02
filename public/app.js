@@ -10,7 +10,7 @@ const state = {
   imageDataUrl: null,
   resultImage: null,        // base64 PNG returned by the API, once generated
   theme: 'webtoon',
-  themeName: '웹툰 제목',
+  themeName: '웹툰 스타일',
   fontStyle: 'noto',
   styleIntensity: 'strong', // weak | normal | strong
   effect3d: 'strong',       // off | weak | strong
@@ -21,11 +21,11 @@ const state = {
 };
 
 const THEME_NAMES = {
-  webtoon: '웹툰 제목',
-  forest: '풀숲',
-  ocean: '바다',
-  glass: '유리',
-  geometric: '기하학'
+  webtoon: '웹툰 스타일',
+  forest: '풀숲 스타일',
+  ocean: '바다 스타일',
+  glass: '유리 스타일',
+  geometric: '도형 스타일'
 };
 
 const HISTORY_KEY = 'typoai_history';
@@ -142,10 +142,13 @@ textInput.addEventListener('input', () => {
 
 const drawCtx = drawCanvas.getContext('2d');
 let brushSize = 7;
+let drawTool = 'pen'; // 'pen' | 'eraser'
 let isDrawing = false;
 let hasDrawing = false;
 let undoStack = [];
 const MAX_UNDO = 20;
+const PEN_COLOR = '#141418';
+const ERASER_COLOR = '#ffffff';
 
 function fillCanvasWhite() {
   drawCtx.fillStyle = '#ffffff';
@@ -184,7 +187,8 @@ drawCanvas.addEventListener('pointerdown', (e) => {
   isDrawing = true;
   hasDrawing = true;
   drawCanvas.setPointerCapture(e.pointerId);
-  drawCtx.lineWidth = brushSize;
+  drawCtx.strokeStyle = drawTool === 'eraser' ? ERASER_COLOR : PEN_COLOR;
+  drawCtx.lineWidth = drawTool === 'eraser' ? brushSize * 2.5 : brushSize;
   const p = getCanvasPoint(e);
   drawCtx.beginPath();
   drawCtx.moveTo(p.x, p.y);
@@ -208,6 +212,14 @@ $$('.draw-brush-toggle .segmented-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     brushSize = Number(btn.dataset.brush);
     $$('.draw-brush-toggle .segmented-btn').forEach(b => b.classList.toggle('is-active', b === btn));
+  });
+});
+
+$$('.draw-tool-toggle .segmented-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    drawTool = btn.dataset.tool;
+    drawCanvas.classList.toggle('is-erasing', drawTool === 'eraser');
+    $$('.draw-tool-toggle .segmented-btn').forEach(b => b.classList.toggle('is-active', b === btn));
   });
 });
 
@@ -295,10 +307,10 @@ function buildPrompt(options) {
 
   const themeDescriptions = {
     webtoon: 'a bold Korean webtoon title design with thick outlines, punchy layered drop shadows, and high-impact comic title styling',
-    forest: 'lush green forest-themed typography, with leaves, vines, and moss wrapping and growing dimensionally around thick, extruded letterforms',
-    ocean: 'flowing ocean-themed typography with rolling wave patterns, deep blue gradients, sea foam, and glossy, translucent water-like surfaces dripping off the letters',
-    glass: 'glossy frosted-glass typography rendered as thick, dimensional glass blocks, with soft blur, refraction, and bright specular light reflections',
-    geometric: 'modern geometric typography built from extruded, dimensional circles, bars, and abstract shapes arranged in a bold, balanced composition'
+    forest: 'a lush grassy meadow background filled with vivid green grass blades and blooming flowers, with the letterforms themselves built from twisting vines, blooming flowers, and tufts of grass',
+    ocean: 'an underwater ocean scene background with colorful fish swimming among shafts of light and drifting bubbles, with the letterforms themselves formed from flowing streams and currents of glossy water',
+    glass: 'a bright blue sky background with soft clouds, with the letterforms themselves rendered as sparkling clear glass lettering, showing refraction, soft blur, and bright specular light reflections',
+    geometric: 'a background tiled with bold geometric shapes such as circles, triangles, bars, and polygons, with the letterforms themselves constructed from and decorated with matching extruded, dimensional geometric shapes'
   };
   const intensityMap = { weak: 'subtle', normal: 'balanced', strong: 'intense and highly pronounced' };
   const effect3dMap = {
@@ -660,6 +672,24 @@ function renderHistory() {
     card.className = 'history-card';
     card.title = '클릭하면 이 설정을 다시 불러옵니다';
 
+    const deleteBtn = document.createElement('span');
+    deleteBtn.className = 'history-delete-btn';
+    deleteBtn.setAttribute('role', 'button');
+    deleteBtn.setAttribute('tabindex', '0');
+    deleteBtn.setAttribute('aria-label', '이 항목 삭제');
+    deleteBtn.title = '이 항목 삭제';
+    deleteBtn.textContent = '✕';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteHistoryEntry(entry.id);
+    });
+    deleteBtn.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      e.stopPropagation();
+      deleteHistoryEntry(entry.id);
+    });
+
     const thumb = document.createElement('span');
     thumb.className = `history-thumb theme-thumb thumb-${entry.theme}`;
 
@@ -686,12 +716,19 @@ function renderHistory() {
       <div class="h-meta"><span>${THEME_NAMES[entry.theme] || entry.themeName}</span><span>${formatTime(entry.createdAt)}</span></div>
     `;
 
+    card.appendChild(deleteBtn);
     card.appendChild(thumb);
     card.appendChild(info);
     card.addEventListener('click', () => restoreFromHistory(entry));
 
     historyTrack.appendChild(card);
   });
+}
+
+function deleteHistoryEntry(id) {
+  const list = loadHistory().filter(entry => entry.id !== id);
+  saveHistory(list);
+  renderHistory();
 }
 
 function escapeHtml(str) {
