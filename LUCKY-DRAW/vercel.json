@@ -1,7 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/draw", "destination": "/index.html" },
-    { "source": "/hall-of-fame", "destination": "/index.html" },
-    { "source": "/admin", "destination": "/index.html" }
-  ]
-}
